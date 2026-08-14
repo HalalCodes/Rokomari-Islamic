@@ -77,10 +77,10 @@
         </div>
       </a>
       <div class="flex items-center gap-3 sm:gap-4">
-        <button id="theme-toggle" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center transition hover:bg-slate-200 dark:hover:bg-slate-700">
+        <button id="theme-toggle" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center transition hover:bg-slate-200 dark:hover:bg-slate-700" aria-label="Toggle Theme">
           <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
         </button>
-        <button id="btn-wishlist-view" class="relative w-8 h-8 rounded-full bg-red-50 dark:bg-red-900/30 text-red-500 flex items-center justify-center transition hover:bg-red-100 dark:hover:bg-red-900/50">
+        <button id="btn-wishlist-view" class="relative w-8 h-8 rounded-full bg-red-50 dark:bg-red-900/30 text-red-500 flex items-center justify-center transition hover:bg-red-100 dark:hover:bg-red-900/50" aria-label="Wishlist">
           <i class="fa-solid fa-heart text-sm"></i>
           <span id="wishlist-badge" class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden border border-white dark:border-slate-900">0</span>
         </button>
@@ -103,14 +103,14 @@
     </div>
   </section>
 
-  <!-- Categories -->
+  <!-- Categories Navigation -->
   <div class="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky top-[65px] sm:top-[73px] z-30 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 py-3">
       <div id="category-container" class="flex gap-2 overflow-x-auto no-scrollbar pb-1 text-sm font-bold"></div>
     </div>
   </div>
 
-  <!-- Main Content -->
+  <!-- Main Catalog Content -->
   <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full">
     <div class="flex justify-between items-center mb-6">
       <h3 id="section-title" class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
@@ -119,18 +119,40 @@
       <span id="book-count" class="text-xs bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold px-3 py-1 rounded-full border border-slate-300 dark:border-slate-700">০</span>
     </div>
 
+    <!-- Empty State -->
     <div id="empty-state" class="hidden text-center py-16 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
       <i class="fa-solid fa-box-open text-5xl text-slate-300 dark:text-slate-600 mb-4"></i>
       <h3 class="text-lg font-bold text-slate-700 dark:text-slate-300">কোনো বই পাওয়া যায়নি</h3>
     </div>
 
+    <!-- Main Grid Container -->
     <div id="books-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
 
-    <div id="scroll-loader" class="text-center py-10 hidden">
-      <i class="fa-solid fa-circle-notch fa-spin text-2xl text-emerald-600"></i>
-      <p class="text-xs text-slate-500 mt-2 font-bold uppercase">লোড হচ্ছে</p>
+    <!-- Skeleton Loading Cards -->
+    <div id="skeleton-loader" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden animate-pulse h-80 flex flex-col justify-between p-4 space-y-3">
+        <div class="bg-slate-200 dark:bg-slate-700 h-48 rounded-xl w-full"></div>
+        <div class="bg-slate-200 dark:bg-slate-700 h-4 rounded w-3/4"></div>
+        <div class="bg-slate-200 dark:bg-slate-700 h-3 rounded w-1/2"></div>
+      </div>
+      <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden animate-pulse h-80 flex flex-col justify-between p-4 space-y-3 hidden sm:flex">
+        <div class="bg-slate-200 dark:bg-slate-700 h-48 rounded-xl w-full"></div>
+        <div class="bg-slate-200 dark:bg-slate-700 h-4 rounded w-3/4"></div>
+        <div class="bg-slate-200 dark:bg-slate-700 h-3 rounded w-1/2"></div>
+      </div>
     </div>
 
+    <!-- Intersection Observer Infinite Scroll Sentinel Element -->
+    <div id="infinite-scroll-sentinel" class="h-10 w-full my-4 flex items-center justify-center"></div>
+
+    <!-- End of Catalog Notice -->
+    <div id="end-of-catalog" class="hidden text-center py-6 border-t border-slate-200 dark:border-slate-800">
+      <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest flex items-center justify-center gap-2">
+        <i class="fa-solid fa-check-circle text-emerald-600"></i> সব বই দেখানো হয়েছে
+      </p>
+    </div>
+
+    <!-- Recently Viewed Books -->
     <div id="recent-section" class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 hidden">
       <h3 class="text-base font-bold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
         <i class="fa-solid fa-clock-rotate-left text-amber-500"></i> সম্প্রতি দেখেছেন
@@ -143,6 +165,7 @@
     <p class="text-xs font-bold text-slate-500">© 2026 Rokomari Islamic. All Rights Reserved.</p>
   </footer>
 
+  <!-- Toast Notification -->
   <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-5 py-2.5 rounded-full shadow-2xl z-[100] text-xs font-bold flex items-center gap-2 transition-all transform translate-y-10 opacity-0 pointer-events-none">
     <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
     <span id="toast-msg">Success</span>
@@ -153,9 +176,11 @@
     let allBooks = [];
     let displayedBooks = [];
     let currentRenderCount = 0;
-    const CHUNK = 10;
+    const CHUNK = 12; // Strictly 12 products per batch
     let currentCategory = 'all';
     let viewMode = 'all';
+    let isBatchLoading = false;
+    let observer = null;
 
     const FALLBACK_IMG = "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22400%22%20viewBox%3D%220%200%20300%20400%22%3E%3Crect%20fill%3D%22%23e2e8f0%22%20width%3D%22300%22%20height%3D%22400%22%2F%3E%3Ctext%20fill%3D%22%2394a3b8%22%20font-family%3D%22sans-serif%22%20font-size%3D%2240%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%3ENo%20Image%3C%2Ftext%3E%3C%2Fsvg%3E";
 
@@ -171,11 +196,14 @@
     });
     const hideSplash = () => {
       const splash = document.getElementById('splash-screen');
-      splash.style.opacity = '0';
-      setTimeout(() => splash.classList.add('hidden'), 500);
+      if (splash) {
+        splash.style.opacity = '0';
+        setTimeout(() => splash.classList.add('hidden'), 500);
+      }
     };
     const splashTimeout = setTimeout(hideSplash, 5000);
 
+    // Theme Switcher
     const htmlEl = document.documentElement;
     const themeIcon = document.getElementById('theme-icon');
     let isDark = localStorage.getItem('theme') === 'dark';
@@ -188,6 +216,7 @@
       isDark = !isDark; localStorage.setItem('theme', isDark ? 'dark' : 'light'); applyTheme();
     };
 
+    // Storage Utilities
     const getStorageArr = (key) => { try { return JSON.parse(localStorage.getItem(key)) || []; } catch(e){ return []; } };
     const setStorageArr = (key, arr) => localStorage.setItem(key, JSON.stringify(arr));
 
@@ -200,14 +229,20 @@
       else { badge.classList.add('hidden'); }
     };
 
+    // Initialize Catalog Data
     async function initData() {
       try {
         const res = await fetch('data.json?v=' + Date.now());
-        if(!res.ok) throw new Error();
+        if(!res.ok) throw new Error("Failed to load catalog");
         const raw = await res.json();
         allBooks = Array.isArray(raw) ? raw : (raw.books || []);
-        setTimeout(() => { clearTimeout(splashTimeout); hideSplash(); }, 1200);
-        setupCategories(); filterData(); renderRecent();
+        
+        setTimeout(() => { clearTimeout(splashTimeout); hideSplash(); }, 1000);
+        
+        setupCategories();
+        filterData();
+        renderRecent();
+        setupIntersectionObserver();
       } catch (err) {
         hideSplash();
         document.getElementById('books-container').innerHTML = '';
@@ -222,17 +257,23 @@
 
       const container = document.getElementById('category-container');
       container.innerHTML = '';
+      
+      const fragment = document.createDocumentFragment();
       finalCats.forEach(cat => {
         const btn = document.createElement('button');
         const isAll = cat === 'all';
         btn.innerText = isAll ? 'সকল বই' : cat;
-        btn.className = `whitespace-nowrap px-4 py-1.5 rounded-full border transition-all ${currentCategory === cat && viewMode === 'all' ? 'bg-islamic-800 text-white border-islamic-800' : 'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'}`;
+        btn.className = `whitespace-nowrap px-4 py-1.5 rounded-full border transition-all ${currentCategory === cat && viewMode === 'all' ? 'bg-islamic-800 text-white border-islamic-800' : 'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-900/30'}`;
         btn.onclick = () => {
-          viewMode = 'all'; currentCategory = cat; document.getElementById('search-input').value = '';
-          setupCategories(); filterData();
+          viewMode = 'all'; 
+          currentCategory = cat; 
+          document.getElementById('search-input').value = '';
+          setupCategories(); 
+          filterData();
         };
-        container.appendChild(btn);
+        fragment.appendChild(btn);
       });
+      container.appendChild(fragment);
       updateWishlistBadge();
     }
 
@@ -241,16 +282,28 @@
       document.getElementById('search-input').value = ''; filterData();
     };
 
+    // Filter Data in Memory without immediate heavy rendering
     function filterData(query = '') {
       currentRenderCount = 0;
+      isBatchLoading = false;
       document.getElementById('books-container').innerHTML = '';
+      document.getElementById('end-of-catalog').classList.add('hidden');
+      
       let base = viewMode === 'wishlist' ? allBooks.filter(b => wishlist.includes(b.id)) : allBooks;
 
-      if (currentCategory !== 'all' && viewMode === 'all') base = base.filter(b => b.category === currentCategory);
+      if (currentCategory !== 'all' && viewMode === 'all') {
+        base = base.filter(b => b.category === currentCategory);
+      }
+      
       if (query) {
         const q = query.toLowerCase();
-        base = base.filter(b => b.title.toLowerCase().includes(q) || (b.description && b.description.toLowerCase().includes(q)) || (b.category && b.category.toLowerCase().includes(q)));
+        base = base.filter(b => 
+          b.title.toLowerCase().includes(q) || 
+          (b.description && b.description.toLowerCase().includes(q)) || 
+          (b.category && b.category.toLowerCase().includes(q))
+        );
       }
+      
       if (viewMode === 'all' && currentCategory === 'all' && !query) {
          base.sort((a,b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
       }
@@ -263,67 +316,110 @@
       else stTitle.innerText = "সকল বইসমূহ";
 
       document.getElementById('book-count').innerText = displayedBooks.length;
-      if(displayedBooks.length === 0) document.getElementById('empty-state').classList.remove('hidden');
-      else { document.getElementById('empty-state').classList.add('hidden'); renderNextBatch(); }
-    }
-
-    function renderNextBatch() {
-      if (currentRenderCount >= displayedBooks.length) return;
-      const container = document.getElementById('books-container');
-      const nextBatch = displayedBooks.slice(currentRenderCount, currentRenderCount + CHUNK);
       
-      nextBatch.forEach(book => {
-        const isWished = wishlist.includes(book.id);
-        const card = document.createElement('div');
-        card.className = "bg-white dark:bg-slate-800 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col group h-full relative cursor-pointer";
-        
-        const bookHtmlPath = `bookhtml/${book.htmlFile || (book.id + '.html')}`;
-
-        card.onclick = (e) => {
-          if(!e.target.closest('.wishlist-trigger') && !e.target.closest('.buy-now-btn')) {
-            window.location.href = bookHtmlPath;
-          }
-        };
-
-        const shortDesc = book.description ? book.description.replace(/[\*\_~`#-]/g, '').trim() : '';
-        const imgUrl = book.imageUrl || FALLBACK_IMG;
-        const buyNowLink = book.affiliateLink ? book.affiliateLink : '#';
-        const buyNowEvent = book.affiliateLink ? '' : `onclick="event.preventDefault(); alert('অর্ডার লিংক পাওয়া যায়নি।');"`;
-        const buyNowOpacity = book.affiliateLink ? '' : 'opacity-50 pointer-events-none';
-
-        card.innerHTML = `
-          <div class="relative h-56 sm:h-64 bg-slate-100 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700 overflow-hidden shrink-0">
-            <img src="${imgUrl}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='${FALLBACK_IMG}'">
-            ${book.featured ? `<div class="absolute top-3 left-3 bg-amber-400 text-slate-900 text-[10px] font-bold px-2.5 py-1 rounded shadow-sm uppercase"><i class="fa-solid fa-star text-[9px]"></i> Featured</div>` : ''}
-            ${book.couponCode ? `<div class="absolute top-3 right-3 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm"><i class="fa-solid fa-ticket"></i> ${book.couponCode}</div>` : ''}
-            <button class="wishlist-trigger absolute bottom-3 right-3 w-8 h-8 rounded-full ${isWished ? 'bg-red-50 text-red-500' : 'bg-white/90 text-slate-400'} shadow hover:bg-white transition flex items-center justify-center text-sm z-10" data-id="${book.id}">
-              <i class="fa-solid fa-heart"></i>
-            </button>
-          </div>
-          <div class="p-4 flex flex-col flex-1">
-            <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider mb-1 block">${book.category || 'বই'}</span>
-            <h4 class="font-bold text-slate-800 dark:text-slate-100 text-base leading-snug mb-2 group-hover:text-emerald-600 transition-colors line-clamp-2">${book.title}</h4>
-            <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mb-4 flex-1">${shortDesc}</p>
-            
-            <div class="grid grid-cols-2 gap-2 mt-auto pt-3 border-t border-slate-100 dark:border-slate-700">
-              <a href="${bookHtmlPath}" class="bg-slate-100 dark:bg-slate-700/50 hover:bg-slate-200 text-slate-700 dark:text-slate-300 font-bold py-2.5 rounded-xl text-[11px] sm:text-xs text-center border border-slate-200 dark:border-slate-600">
-                বিস্তারিত
-              </a>
-              <a href="${buyNowLink}" target="_blank" rel="noopener noreferrer" ${buyNowEvent} class="buy-now-btn ${buyNowOpacity} bg-islamic-800 hover:bg-islamic-900 text-white font-bold py-2.5 rounded-xl text-[11px] sm:text-xs text-center flex items-center justify-center gap-1.5 border border-emerald-700 shadow-sm transition-all z-10">
-                <i class="fa-solid fa-cart-shopping text-amber-400"></i> এখনই অর্ডার
-              </a>
-            </div>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-      currentRenderCount += nextBatch.length;
+      if(displayedBooks.length === 0) {
+        document.getElementById('empty-state').classList.remove('hidden');
+      } else { 
+        document.getElementById('empty-state').classList.add('hidden'); 
+        renderNextBatch(); 
+      }
     }
 
-    window.addEventListener('scroll', () => {
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 300) renderNextBatch();
-    });
+    // High-Performance Batch Rendering with DocumentFragment
+    function renderNextBatch() {
+      if (isBatchLoading || currentRenderCount >= displayedBooks.length) {
+        if (currentRenderCount >= displayedBooks.length && displayedBooks.length > 0) {
+          document.getElementById('end-of-catalog').classList.remove('hidden');
+        }
+        return;
+      }
 
+      isBatchLoading = true;
+      const skeleton = document.getElementById('skeleton-loader');
+      skeleton.classList.remove('hidden');
+
+      // Small async delay to prevent UI freezing and show skeleton smoothly
+      requestAnimationFrame(() => {
+        const container = document.getElementById('books-container');
+        const nextBatch = displayedBooks.slice(currentRenderCount, currentRenderCount + CHUNK);
+        const fragment = document.createDocumentFragment();
+
+        nextBatch.forEach(book => {
+          const isWished = wishlist.includes(book.id);
+          const card = document.createElement('div');
+          card.className = "bg-white dark:bg-slate-800 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col group h-full relative cursor-pointer";
+          
+          const bookHtmlPath = `bookhtml/${book.htmlFile || (book.id + '.html')}`;
+
+          card.onclick = (e) => {
+            if(!e.target.closest('.wishlist-trigger') && !e.target.closest('.buy-now-btn')) {
+              window.location.href = bookHtmlPath;
+            }
+          };
+
+          const shortDesc = book.description ? book.description.replace(/[\*\_~`#-]/g, '').trim() : '';
+          const imgUrl = book.imageUrl || FALLBACK_IMG;
+          const buyNowLink = book.affiliateLink ? book.affiliateLink : '#';
+          const buyNowEvent = book.affiliateLink ? '' : `onclick="event.preventDefault(); alert('অর্ডার লিংক পাওয়া যায়নি।');"`;
+          const buyNowOpacity = book.affiliateLink ? '' : 'opacity-50 pointer-events-none';
+
+          card.innerHTML = `
+            <div class="relative h-56 sm:h-64 bg-slate-100 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700 overflow-hidden shrink-0">
+              <img src="${imgUrl}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';">
+              ${book.featured ? `<div class="absolute top-3 left-3 bg-amber-400 text-slate-900 text-[10px] font-bold px-2.5 py-1 rounded shadow-sm uppercase"><i class="fa-solid fa-star text-[9px]"></i> Featured</div>` : ''}
+              ${book.couponCode ? `<div class="absolute top-3 right-3 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm"><i class="fa-solid fa-ticket"></i> ${book.couponCode}</div>` : ''}
+              <button class="wishlist-trigger absolute bottom-3 right-3 w-8 h-8 rounded-full ${isWished ? 'bg-red-50 text-red-500' : 'bg-white/90 text-slate-400'} shadow hover:bg-white transition flex items-center justify-center text-sm z-10" data-id="${book.id}" aria-label="Add to Wishlist">
+                <i class="fa-solid fa-heart"></i>
+              </button>
+            </div>
+            <div class="p-4 flex flex-col flex-1">
+              <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider mb-1 block">${book.category || 'বই'}</span>
+              <h4 class="font-bold text-slate-800 dark:text-slate-100 text-base leading-snug mb-2 group-hover:text-emerald-600 transition-colors line-clamp-2">${book.title}</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mb-4 flex-1">${shortDesc}</p>
+              
+              <div class="grid grid-cols-2 gap-2 mt-auto pt-3 border-t border-slate-100 dark:border-slate-700">
+                <a href="${bookHtmlPath}" class="bg-slate-100 dark:bg-slate-700/50 hover:bg-slate-200 text-slate-700 dark:text-slate-300 font-bold py-2.5 rounded-xl text-[11px] sm:text-xs text-center border border-slate-200 dark:border-slate-600">
+                  বিস্তারিত
+                </a>
+                <a href="${buyNowLink}" target="_blank" rel="noopener noreferrer" ${buyNowEvent} class="buy-now-btn ${buyNowOpacity} bg-islamic-800 hover:bg-islamic-900 text-white font-bold py-2.5 rounded-xl text-[11px] sm:text-xs text-center flex items-center justify-center gap-1.5 border border-emerald-700 shadow-sm transition-all z-10">
+                  <i class="fa-solid fa-cart-shopping text-amber-400"></i> এখনই অর্ডার
+                </a>
+              </div>
+            </div>
+          `;
+          fragment.appendChild(card);
+        });
+
+        container.appendChild(fragment);
+        currentRenderCount += nextBatch.length;
+        skeleton.classList.add('hidden');
+        isBatchLoading = false;
+
+        if (currentRenderCount >= displayedBooks.length && displayedBooks.length > 0) {
+          document.getElementById('end-of-catalog').classList.remove('hidden');
+        }
+      });
+    }
+
+    // Modern IntersectionObserver Infinite Scroll (Triggering at ~80% scroll depth)
+    function setupIntersectionObserver() {
+      const sentinel = document.getElementById('infinite-scroll-sentinel');
+      if (!sentinel) return;
+
+      observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && !isBatchLoading) {
+          renderNextBatch();
+        }
+      }, {
+        root: null,
+        rootMargin: '200px', // Pre-trigger loading 200px before user hits bottom
+        threshold: 0.1
+      });
+
+      observer.observe(sentinel);
+    }
+
+    // Wishlist Toggle Event Delegation
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('.wishlist-trigger');
       if(!btn) return;
@@ -337,20 +433,28 @@
         btn.className = "wishlist-trigger absolute bottom-3 right-3 w-8 h-8 rounded-full bg-red-50 text-red-500 shadow hover:bg-white transition flex items-center justify-center text-sm z-10";
         showToast("উইশলিস্টে যুক্ত হয়েছে!");
       }
-      setStorageArr('wishlist', wishlist); updateWishlistBadge();
+      setStorageArr('wishlist', wishlist); 
+      updateWishlistBadge();
     });
 
+    // Debounced Search Input Handler
     let searchTimeout;
     document.getElementById('search-input').addEventListener('input', (e) => {
       clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => { filterData(e.target.value.trim()); }, 300);
+      const query = e.target.value.trim();
+      searchTimeout = setTimeout(() => { filterData(query); }, 250);
     });
 
+    // Render Recently Viewed Books
     function renderRecent() {
       const sec = document.getElementById('recent-section');
       const container = document.getElementById('recent-container');
       if(recentIds.length === 0 || allBooks.length === 0) { sec.classList.add('hidden'); return; }
-      container.innerHTML = ''; sec.classList.remove('hidden');
+      
+      container.innerHTML = ''; 
+      sec.classList.remove('hidden');
+      const fragment = document.createDocumentFragment();
+
       recentIds.forEach(id => {
         const book = allBooks.find(b => b.id === id);
         if(!book) return;
@@ -360,14 +464,16 @@
         div.onclick = () => { window.location.href = bookHtmlPath; };
         div.innerHTML = `
           <div class="w-full h-32 sm:h-40 bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm mb-2 group-hover:border-emerald-500 transition-colors">
-            <img src="${book.imageUrl || FALLBACK_IMG}" loading="lazy" class="w-full h-full object-cover" onerror="this.src='${FALLBACK_IMG}'">
+            <img src="${book.imageUrl || FALLBACK_IMG}" loading="lazy" decoding="async" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';">
           </div>
           <h5 class="text-[10px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 line-clamp-2 leading-tight group-hover:text-emerald-600">${book.title}</h5>
         `;
-        container.appendChild(div);
+        fragment.appendChild(div);
       });
+      container.appendChild(fragment);
     }
 
+    // Start App
     initData();
   </script>
 </body>
