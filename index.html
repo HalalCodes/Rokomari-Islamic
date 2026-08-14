@@ -200,20 +200,6 @@
       else { badge.classList.add('hidden'); }
     };
 
-    function getBookPageUrl(book) {
-      if (book.htmlFile) {
-        return `${SITE_URL}/bookhtml/${book.htmlFile}`;
-      }
-      return `${SITE_URL}/book.html?id=${book.id}`;
-    }
-
-    function recordRecentView(id) {
-      let recent = getStorageArr('recent').filter(rId => rId !== id);
-      recent.unshift(id);
-      if(recent.length > 10) recent = recent.slice(0, 10);
-      setStorageArr('recent', recent);
-    }
-
     async function initData() {
       try {
         const res = await fetch('data.json?v=' + Date.now());
@@ -288,14 +274,14 @@
       
       nextBatch.forEach(book => {
         const isWished = wishlist.includes(book.id);
-        const bookPageUrl = getBookPageUrl(book);
         const card = document.createElement('div');
         card.className = "bg-white dark:bg-slate-800 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col group h-full relative cursor-pointer";
         
+        const bookHtmlPath = `bookhtml/${book.htmlFile || (book.id + '.html')}`;
+
         card.onclick = (e) => {
           if(!e.target.closest('.wishlist-trigger') && !e.target.closest('.buy-now-btn')) {
-            recordRecentView(book.id);
-            window.location.href = bookPageUrl;
+            window.location.href = bookHtmlPath;
           }
         };
 
@@ -320,7 +306,7 @@
             <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mb-4 flex-1">${shortDesc}</p>
             
             <div class="grid grid-cols-2 gap-2 mt-auto pt-3 border-t border-slate-100 dark:border-slate-700">
-              <a href="${bookPageUrl}" onclick="recordRecentView('${book.id}')" class="bg-slate-100 dark:bg-slate-700/50 hover:bg-slate-200 text-slate-700 dark:text-slate-300 font-bold py-2.5 rounded-xl text-[11px] sm:text-xs text-center border border-slate-200 dark:border-slate-600">
+              <a href="${bookHtmlPath}" class="bg-slate-100 dark:bg-slate-700/50 hover:bg-slate-200 text-slate-700 dark:text-slate-300 font-bold py-2.5 rounded-xl text-[11px] sm:text-xs text-center border border-slate-200 dark:border-slate-600">
                 বিস্তারিত
               </a>
               <a href="${buyNowLink}" target="_blank" rel="noopener noreferrer" ${buyNowEvent} class="buy-now-btn ${buyNowOpacity} bg-islamic-800 hover:bg-islamic-900 text-white font-bold py-2.5 rounded-xl text-[11px] sm:text-xs text-center flex items-center justify-center gap-1.5 border border-emerald-700 shadow-sm transition-all z-10">
@@ -363,16 +349,15 @@
     function renderRecent() {
       const sec = document.getElementById('recent-section');
       const container = document.getElementById('recent-container');
-      const recentList = getStorageArr('recent');
-      if(recentList.length === 0 || allBooks.length === 0) { sec.classList.add('hidden'); return; }
+      if(recentIds.length === 0 || allBooks.length === 0) { sec.classList.add('hidden'); return; }
       container.innerHTML = ''; sec.classList.remove('hidden');
-      recentList.forEach(id => {
+      recentIds.forEach(id => {
         const book = allBooks.find(b => b.id === id);
         if(!book) return;
-        const bookPageUrl = getBookPageUrl(book);
+        const bookHtmlPath = `bookhtml/${book.htmlFile || (book.id + '.html')}`;
         const div = document.createElement('div');
         div.className = "w-24 sm:w-28 shrink-0 cursor-pointer group snap-start";
-        div.onclick = () => { recordRecentView(book.id); window.location.href = bookPageUrl; };
+        div.onclick = () => { window.location.href = bookHtmlPath; };
         div.innerHTML = `
           <div class="w-full h-32 sm:h-40 bg-slate-100 dark:bg-slate-800 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm mb-2 group-hover:border-emerald-500 transition-colors">
             <img src="${book.imageUrl || FALLBACK_IMG}" loading="lazy" class="w-full h-full object-cover" onerror="this.src='${FALLBACK_IMG}'">
@@ -387,5 +372,3 @@
   </script>
 </body>
 </html>
-
-
