@@ -30,7 +30,7 @@
 </head>
 <body class="min-h-screen text-slate-800 flex flex-col justify-between overflow-x-hidden">
 
-  <!-- Admin Auth Screen -->
+  <!-- Admin Password Screen -->
   <div id="auth-screen" class="fixed inset-0 bg-slate-900 z-50 flex items-center justify-center p-4 transition-opacity duration-300">
     <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center border border-slate-100">
       <div class="w-16 h-16 bg-emerald-50 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner border border-emerald-100">
@@ -40,7 +40,7 @@
       <p class="text-sm text-slate-500 mb-6">প্রবেশ করতে পাসওয়ার্ড দিন</p>
 
       <form id="auth-form" class="space-y-4">
-        <input type="password" id="admin-pass-input" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm text-center outline-none focus:ring-2 focus:ring-emerald-600 bg-slate-50">
+        <input type="password" id="admin-pass-input" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm text-center outline-none focus:ring-2 focus:ring-emerald-600 bg-slate-50" autocomplete="current-password">
         <button type="submit" class="w-full bg-islamic-800 hover:bg-islamic-900 text-white font-bold py-3 rounded-xl text-sm transition-all shadow-md">
           <i class="fa-solid fa-arrow-right-to-bracket"></i> লগইন করুন
         </button>
@@ -55,7 +55,8 @@
       <div class="max-w-7xl mx-auto flex justify-between items-center">
         <div class="flex items-center gap-3">
           <div class="bg-white p-1 rounded-lg">
-            <img src="https://onlinecdndrive.vercel.app/rokomari-islamic-logo.jpg" alt="Logo" class="w-8 h-8 rounded object-cover">
+            <img src="https://onlinecdndrive.vercel.app/rokomari-islamic-logo.jpg" alt="Logo" class="w-8 h-8 rounded object-cover" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+            <span class="hidden text-slate-900 font-bold text-sm">📖</span>
           </div>
           <h1 class="text-sm md:text-lg font-bold text-amber-300 hidden sm:block">অ্যাডমিন প্যানেল</h1>
         </div>
@@ -80,7 +81,7 @@
       <main class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
         <!-- Form Column -->
-        <section class="lg:col-span-5 h-fit bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-6">
+        <section class="lg:col-span-5 h-fit bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-6 sticky top-6">
           <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-5">
             <h2 id="form-title" class="text-lg font-bold text-slate-800 flex items-center gap-2">
               <i class="fa-solid fa-pen-to-square text-emerald-600"></i> বই যুক্ত / এডিট করুন
@@ -92,17 +93,18 @@
 
           <form id="book-form" class="space-y-4">
             <input type="hidden" id="edit-book-id">
-            <input type="hidden" id="original-html-file">
+            <input type="hidden" id="old-html-file">
 
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1.5">বইয়ের শিরোনাম <span class="text-red-500">*</span></label>
-              <input type="text" id="book-title" required placeholder="যেমন: প্যারাডক্সিক্যাল সাজিদ" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50 focus:bg-white">
+              <input type="text" id="book-title" required placeholder="যেমন: প্রোডাক্টিভ মুসলিম" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50 focus:bg-white">
             </div>
 
+            <!-- Book HTML Filename Field -->
             <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1.5">Book HTML Filename <span class="text-red-500">*</span></label>
-              <input type="text" id="book-html-filename" required placeholder="যেমন: examplebook.html" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50 focus:bg-white font-mono text-xs">
-              <p class="text-[10px] text-slate-500 mt-1">পাবলিক ইউআরএল: <span id="html-url-preview" class="font-mono text-emerald-700 font-bold">https://affiliate-rokomari-islamic.vercel.app/bookhtml/...</span></p>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Book HTML File Name <span class="text-red-500">*</span></label>
+              <input type="text" id="book-html-file" required placeholder="যেমন: productive-muslim.html" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50 font-mono">
+              <p class="text-[10px] text-slate-500 mt-1">💡 ফাইলটি <span class="font-mono text-emerald-700 font-bold">bookhtml/</span> ফোল্ডারে সেভ হবে। (যেমন: productive-muslim.html)</p>
             </div>
 
             <div>
@@ -113,11 +115,11 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1.5">অ্যাফিলিয়েট লিংক <span class="text-red-500">*</span></label>
-                <input type="url" id="affiliate-link" required placeholder="https://..." class="w-full border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50">
+                <input type="url" id="affiliate-link" required placeholder="https://rkmri.co/..." class="w-full border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50">
               </div>
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1.5">কুপন কোড</label>
-                <input type="text" id="coupon-code" placeholder="ঐচ্ছিক (যেমন: SAVE20)" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50">
+                <input type="text" id="coupon-code" placeholder="ঐচ্ছিক (যেমন: CHAMPION26)" class="w-full border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50">
               </div>
             </div>
 
@@ -128,24 +130,20 @@
               </label>
 
               <div>
-                <label class="block text-[10px] font-bold text-slate-500 mb-1">Image URL <span class="text-red-500">*</span></label>
-                <input type="url" id="image-url-input" required placeholder="https://..." class="w-full border border-slate-300 rounded-lg p-2.5 text-xs outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+                <label class="block text-[10px] font-bold text-slate-500 mb-1">Image URL</label>
+                <input type="url" id="image-url-input" required placeholder="https://affiliate-rokomari-islamic.vercel.app/image/..." class="w-full border border-slate-300 rounded-lg p-2.5 text-xs outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
               </div>
               
               <div class="mt-3 pt-3 border-t border-slate-200 space-y-2">
-                 <p class="text-[11px] font-bold text-slate-700">গিটহাবে ছবি সরাসরি আপলোড করুন:</p>
+                 <p class="text-[11px] font-bold text-slate-700">গিটহাবে নতুন ছবি আপলোড করুন:</p>
                  <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.webp" class="w-full text-xs text-slate-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 border border-slate-200 rounded-xl p-1 bg-white">
                  <input type="text" id="custom-file-name" placeholder="ফাইলের নাম (যেমন: picture.jpg)" class="w-full border border-slate-300 rounded-lg p-2 text-xs outline-none focus:border-emerald-500 font-mono">
                  <button type="button" id="btn-direct-upload" class="w-full bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold py-2.5 rounded-lg transition flex items-center justify-center gap-2 shadow-sm">
                    <i class="fa-solid fa-upload"></i> image/ ফোল্ডারে আপলোড করুন
                  </button>
-                 <div id="upload-result" class="hidden p-2.5 bg-emerald-50 border border-emerald-200 rounded-lg text-[11px] text-emerald-800 break-all leading-relaxed space-y-1">
-                    <p class="font-bold text-emerald-900"><i class="fa-solid fa-check-circle text-emerald-600"></i> সফলভাবে আপলোড হয়েছে!</p>
-                    <p><span class="font-bold text-slate-600">GitHub Path:</span> <code id="uploaded-path-text" class="bg-white px-1 py-0.5 rounded border text-emerald-800 font-mono"></code></p>
-                    <p><span class="font-bold text-slate-600">Public URL:</span> <a id="uploaded-url-text" href="#" target="_blank" class="font-mono font-bold text-emerald-700 hover:underline"></a></p>
-                    <button type="button" onclick="copyUploadedUrl()" class="mt-1 bg-emerald-600 text-white px-2 py-0.5 rounded text-[10px] font-bold hover:bg-emerald-700 transition">
-                      <i class="fa-regular fa-copy"></i> URL কপি করুন
-                    </button>
+                 <div id="upload-result" class="hidden p-2.5 bg-emerald-50 border border-emerald-200 rounded-lg text-[11px] text-emerald-800 break-all leading-relaxed">
+                    <i class="fa-solid fa-check-circle"></i> সফলভাবে আপলোড হয়েছে:<br>
+                    <a id="uploaded-url-text" href="#" target="_blank" class="font-mono font-bold text-emerald-700 hover:underline"></a>
                  </div>
               </div>
             </div>
@@ -161,7 +159,7 @@
             </div>
 
             <button type="submit" id="save-btn" class="w-full bg-islamic-800 hover:bg-islamic-900 text-white font-bold py-3.5 rounded-xl shadow-md text-sm transition-all flex items-center justify-center gap-2">
-              <i class="fa-solid fa-cloud-arrow-up"></i> সেভ করুন ও গিটহাবে সিঙ্ক করুন
+              <i class="fa-solid fa-cloud-arrow-up"></i> সেভ করুন, HTML জেনারেট ও সিঙ্ক করুন
             </button>
           </form>
         </section>
@@ -211,10 +209,6 @@
           <label class="block text-xs font-bold text-slate-700 mb-1">Personal Access Token *</label>
           <input type="password" id="gh-token" placeholder="ghp_..." class="w-full border border-slate-300 bg-slate-50 rounded-lg p-2.5 text-sm outline-none">
         </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Public Base URL *</label>
-          <input type="url" id="gh-base-url" value="https://affiliate-rokomari-islamic.vercel.app" class="w-full border border-slate-300 bg-slate-50 rounded-lg p-2.5 text-sm outline-none">
-        </div>
       </div>
       <div class="mt-6 flex justify-end gap-3">
         <button id="save-gh-settings" class="px-6 py-2.5 bg-emerald-600 text-white rounded-xl text-sm font-bold shadow-md">Save Setup</button>
@@ -223,7 +217,9 @@
   </div>
 
   <script>
+    // Centralized Domain Constant
     const SITE_URL = "https://affiliate-rokomari-islamic.vercel.app";
+
     let localBooksData = [];
     let fileSha = ""; 
 
@@ -233,7 +229,7 @@
       toast.className = `fixed bottom-4 right-4 ${color} text-white px-4 py-3 rounded-lg shadow-xl text-xs font-bold z-[100]`;
       toast.innerText = msg;
       document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 3000);
+      setTimeout(() => toast.remove(), 3500);
     };
 
     document.getElementById('auth-form').onsubmit = (e) => {
@@ -254,7 +250,6 @@
       document.getElementById('gh-branch').value = localStorage.getItem('gh_branch') || 'main';
       document.getElementById('gh-path').value = localStorage.getItem('gh_path') || 'data.json';
       document.getElementById('gh-token').value = localStorage.getItem('gh_token') || '';
-      document.getElementById('gh-base-url').value = localStorage.getItem('gh_base_url') || SITE_URL;
       ghModal.classList.remove('hidden'); ghModal.classList.add('flex');
     };
     document.getElementById('close-gh-modal').onclick = () => ghModal.classList.add('hidden');
@@ -264,7 +259,6 @@
       localStorage.setItem('gh_branch', document.getElementById('gh-branch').value.trim() || 'main');
       localStorage.setItem('gh_path', document.getElementById('gh-path').value.trim() || 'data.json');
       localStorage.setItem('gh_token', document.getElementById('gh-token').value.trim());
-      localStorage.setItem('gh_base_url', (document.getElementById('gh-base-url').value.trim() || SITE_URL).replace(/\/$/, ""));
       notify("✅ গিটহাব কনফিগারেশন সেভ হয়েছে!");
       ghModal.classList.add('hidden');
       loadDataFromGitOrLocal();
@@ -272,54 +266,21 @@
 
     const getGitConfig = () => ({
       repo: localStorage.getItem('gh_repo'), token: localStorage.getItem('gh_token'),
-      branch: localStorage.getItem('gh_branch') || 'main', path: localStorage.getItem('gh_path') || 'data.json',
-      baseUrl: (localStorage.getItem('gh_base_url') || SITE_URL).replace(/\/$/, "")
+      branch: localStorage.getItem('gh_branch') || 'main', path: localStorage.getItem('gh_path') || 'data.json'
     });
-
     const utf8ToBase64 = (str) => btoa(unescape(encodeURIComponent(str)));
     const base64ToUtf8 = (str) => decodeURIComponent(escape(atob(str)));
 
-    function sanitizeFilename(filename) {
-      return filename.toLowerCase().replace(/[^a-z0-9\-_.]/g, '-');
-    }
-
-    function generateDefaultHtmlFilename(title) {
-      if(!title) return `book-${Date.now()}.html`;
-      const clean = title.toLowerCase()
-        .replace(/[\/\s\\?%*:|"<>]/g, '-')
-        .replace(/[^a-z0-9\-]/g, '')
-        .replace(/-+/g, '-')
-        .replace(/^-|-$/g, '');
-      return (clean || `book-${Date.now()}`) + '.html';
-    }
-
-    // Live HTML Filename Preview
-    document.getElementById('book-html-filename').addEventListener('input', (e) => {
-      const val = e.target.value.trim();
-      const preview = document.getElementById('html-url-preview');
-      preview.innerText = val ? `${SITE_URL}/bookhtml/${val}` : `${SITE_URL}/bookhtml/...`;
-    });
+    // Auto HTML filename generator from title
+    const sanitizeHtmlFilename = (raw) => {
+      let name = raw.trim().toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+      if(!name) name = 'book-' + Date.now();
+      return name + '.html';
+    };
 
     document.getElementById('book-title').addEventListener('input', (e) => {
-      const editId = document.getElementById('edit-book-id').value;
-      if (!editId) {
-        const titleVal = e.target.value.trim();
-        const htmlInput = document.getElementById('book-html-filename');
-        if (!htmlInput.value || htmlInput.dataset.autoGenerated === 'true') {
-          htmlInput.value = generateDefaultHtmlFilename(titleVal);
-          htmlInput.dataset.autoGenerated = 'true';
-          document.getElementById('html-url-preview').innerText = `${SITE_URL}/bookhtml/${htmlInput.value}`;
-        }
-      }
-    });
-
-    document.getElementById('file-input').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const customNameInput = document.getElementById('custom-file-name');
-        if(!customNameInput.value.trim()) {
-          customNameInput.value = sanitizeFilename(file.name);
-        }
+      if(!document.getElementById('edit-book-id').value) {
+        document.getElementById('book-html-file').value = sanitizeHtmlFilename(e.target.value);
       }
     });
 
@@ -356,19 +317,17 @@
       dataArr.forEach(book => {
         const item = document.createElement('div');
         item.className = "flex items-center justify-between bg-white border border-slate-200 rounded-xl p-3";
-        const pageHtmlName = book.htmlFile || generateDefaultHtmlFilename(book.title);
+        const hFile = book.htmlFile || (book.id + '.html');
         item.innerHTML = `
           <div class="flex gap-3 items-center truncate">
             <img src="${book.imageUrl}" class="w-10 h-12 object-cover rounded border">
             <div class="truncate">
               <h4 class="font-bold text-xs truncate">${book.title}</h4>
-              <p class="text-[10px] text-emerald-700 font-mono truncate"><i class="fa-solid fa-file-code text-[9px]"></i> bookhtml/${pageHtmlName}</p>
+              <p class="text-[10px] text-emerald-700 font-mono truncate">bookhtml/${hFile}</p>
             </div>
           </div>
           <div class="flex gap-2 shrink-0">
-            <a href="${SITE_URL}/bookhtml/${pageHtmlName}" target="_blank" class="bg-emerald-50 text-emerald-700 px-2 py-1 rounded text-xs font-bold hover:bg-emerald-100 flex items-center gap-1" title="ভিউ">
-              <i class="fa-solid fa-eye"></i>
-            </a>
+            <a href="${SITE_URL}/bookhtml/${hFile}" target="_blank" class="bg-emerald-50 text-emerald-700 px-2 py-1 rounded text-xs font-bold" title="View Static Page"><i class="fa-solid fa-eye"></i></a>
             <button onclick="editBook('${book.id}')" class="bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded text-xs font-bold">এডিট</button>
             <button onclick="deleteBook('${book.id}')" class="bg-red-50 text-red-600 px-2.5 py-1 rounded text-xs font-bold">ডিলিট</button>
           </div>
@@ -381,14 +340,10 @@
       const book = localBooksData.find(b => b.id === id);
       if (!book) return;
       document.getElementById('edit-book-id').value = book.id;
-      document.getElementById('original-html-file').value = book.htmlFile || '';
       document.getElementById('book-title').value = book.title;
-      
-      const htmlFilename = book.htmlFile || generateDefaultHtmlFilename(book.title);
-      document.getElementById('book-html-filename').value = htmlFilename;
-      document.getElementById('book-html-filename').dataset.autoGenerated = 'false';
-      document.getElementById('html-url-preview').innerText = `${SITE_URL}/bookhtml/${htmlFilename}`;
-
+      const htmlFileName = book.htmlFile || (book.id + '.html');
+      document.getElementById('book-html-file').value = htmlFileName;
+      document.getElementById('old-html-file').value = htmlFileName;
       document.getElementById('book-category').value = book.category || '';
       document.getElementById('affiliate-link').value = book.affiliateLink;
       document.getElementById('coupon-code').value = book.couponCode || '';
@@ -404,9 +359,7 @@
       e.preventDefault();
       document.getElementById('book-form').reset();
       document.getElementById('edit-book-id').value = '';
-      document.getElementById('original-html-file').value = '';
-      document.getElementById('book-html-filename').dataset.autoGenerated = 'false';
-      document.getElementById('html-url-preview').innerText = `${SITE_URL}/bookhtml/...`;
+      document.getElementById('old-html-file').value = '';
       document.getElementById('form-title').innerText = "বই যুক্ত করুন";
       document.getElementById('reset-form-btn').classList.add('hidden');
     };
@@ -421,12 +374,10 @@
       if (!fileInput.files[0] || !customNameInput) { notify("ফাইল এবং ফাইলের নাম দিন।", "error"); return; }
       
       const file = fileInput.files[0];
-      const cleanFileName = sanitizeFilename(customNameInput);
-      const { repo, token, branch, baseUrl } = getGitConfig();
-      if (!repo || !token || !baseUrl) { notify("গিটহাব বা Base URL কনফিগারেশন নেই!", "error"); return; }
+      const { repo, token, branch } = getGitConfig();
+      if (!repo || !token) { notify("গিটহাব কনফিগারেশন নেই!", "error"); return; }
 
       btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> আপলোড হচ্ছে...`;
       try {
         const base64Data = await new Promise((resolve) => {
           const reader = new FileReader();
@@ -434,9 +385,8 @@
           reader.onload = () => resolve(reader.result.split(',')[1]);
         });
 
-        // Path in image/ folder
-        const exactPath = `image/${cleanFileName}`;
-        const finalUrl = `${baseUrl}/${exactPath}`;
+        const exactPath = `image/${customNameInput}`;
+        const finalUrl = `${SITE_URL}/${exactPath}`;
 
         let fileShaForImage = null;
         try {
@@ -444,7 +394,7 @@
           if(checkRes.ok) fileShaForImage = (await checkRes.json()).sha;
         } catch(e) {}
 
-        const payload = { message: `Upload image/${cleanFileName} via CMS`, content: base64Data, branch: branch };
+        const payload = { message: `Upload ${exactPath}`, content: base64Data, branch: branch };
         if(fileShaForImage) payload.sha = fileShaForImage;
 
         const res = await fetch(`https://api.github.com/repos/${repo}/contents/${exactPath}`, {
@@ -453,10 +403,9 @@
           body: JSON.stringify(payload)
         });
 
-        if (!res.ok) throw new Error("গিটহাবে ইমেজ আপলোড ব্যর্থ হয়েছে।");
+        if (!res.ok) throw new Error("গিটহাবে আপলোড ব্যর্থ হয়েছে।");
 
         resBox.classList.remove('hidden');
-        document.getElementById('uploaded-path-text').innerText = exactPath;
         document.getElementById('uploaded-url-text').href = finalUrl;
         document.getElementById('uploaded-url-text').innerText = finalUrl;
         document.getElementById('image-url-input').value = finalUrl;
@@ -465,23 +414,16 @@
         notify("❌ Error: " + err.message, "error");
       } finally {
         btn.disabled = false;
-        btn.innerHTML = `<i class="fa-solid fa-upload"></i> image/ ফোল্ডারে আপলোড করুন`;
         fileInput.value = "";
       }
     };
 
-    window.copyUploadedUrl = () => {
-      const url = document.getElementById('uploaded-url-text').href;
-      navigator.clipboard.writeText(url);
-      notify("কপি করা হয়েছে!");
-    };
-
-    // --- GENERATE STANDALONE BOOK HTML CONTENT WITH OG META TAGS ---
-    function generateBookHtmlPageContent(book) {
-      const pageTitle = `${book.title} - Rokomari Islamic`;
-      const cleanDesc = book.description ? book.description.replace(/[\*\_~`#-]/g, '').trim().replace(/\s+/g, ' ') : '';
-      const shortDesc = cleanDesc.substring(0, 160) || 'ইসলামিক বইয়ের বিবরণ ও অর্ডার লিংক।';
-      const pageUrl = `${SITE_URL}/bookhtml/${book.htmlFile}`;
+    // --- GENERATE STATIC HTML TEMPLATE FOR BOOK ---
+    function generateBookHtmlContent(book) {
+      const cleanDesc = book.description ? book.description.replace(/[\*\_~`#-]/g, '').trim().substring(0, 160) : 'ইসলামিক বইয়ের বিস্তারিত বিবরণ ও বিশেষ অফার।';
+      const pageTitle = `${book.title} | Rokomari Islamic`;
+      const htmlFile = book.htmlFile || (book.id + '.html');
+      const canonicalUrl = `${SITE_URL}/bookhtml/${htmlFile}`;
       const imgUrl = book.imageUrl || 'https://onlinecdndrive.vercel.app/rokomari-islamic-logo.jpg';
 
       return `<!DOCTYPE html>
@@ -489,31 +431,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>${escapeHtml(pageTitle)}</title>
-  <meta name="description" content="${escapeHtml(shortDesc)}">
-  <link rel="canonical" href="${escapeHtml(pageUrl)}">
+  <title>${pageTitle}</title>
+  <meta name="description" content="${cleanDesc}">
+  <link rel="canonical" href="${canonicalUrl}">
+  <link rel="icon" type="image/jpeg" href="https://onlinecdndrive.vercel.app/rokomari-islamic-logo.jpg">
 
-  <!-- Open Graph Meta Tags for Social Sharing -->
-  <meta property="og:type" content="book">
+  <!-- Open Graph Meta Tags for Facebook, WhatsApp & Social Sharing -->
+  <meta property="og:type" content="website">
   <meta property="og:site_name" content="Rokomari Islamic">
-  <meta property="og:title" content="${escapeHtml(book.title)}">
-  <meta property="og:description" content="${escapeHtml(shortDesc)}">
-  <meta property="og:image" content="${escapeHtml(imgUrl)}">
-  <meta property="og:image:alt" content="${escapeHtml(book.title)}">
-  <meta property="og:url" content="${escapeHtml(pageUrl)}">
+  <meta property="og:title" content="${book.title}">
+  <meta property="og:description" content="${cleanDesc}">
+  <meta property="og:image" content="${imgUrl}">
+  <meta property="og:image:alt" content="${book.title}">
+  <meta property="og:url" content="${canonicalUrl}">
 
   <!-- Twitter Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="${escapeHtml(book.title)}">
-  <meta name="twitter:description" content="${escapeHtml(shortDesc)}">
-  <meta name="twitter:image" content="${escapeHtml(imgUrl)}">
+  <meta name="twitter:title" content="${book.title}">
+  <meta name="twitter:description" content="${cleanDesc}">
+  <meta name="twitter:image" content="${imgUrl}">
 
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com"><\/script>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.3/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"><\/script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.3/purify.min.js"><\/script>
 
   <script>
     tailwind.config = {
@@ -525,13 +468,12 @@
         }
       }
     }
-  </script>
+  <\/script>
   <style>
     body { font-family: 'Hind Siliguri', sans-serif; }
     .prose-custom p { margin-bottom: 0.85rem; line-height: 1.7; }
     .prose-custom strong { font-weight: 700; color: inherit; }
     .prose-custom ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.85rem; }
-    .prose-custom ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 0.85rem; }
     .prose-custom a { color: #059669; text-decoration: underline; font-weight: 600; word-break: break-all; }
   </style>
 </head>
@@ -551,36 +493,35 @@
   <main class="max-w-4xl mx-auto px-4 py-8 flex-1 w-full">
     <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col md:flex-row">
       
-      <div class="w-full md:w-2/5 h-72 md:h-[450px] bg-slate-100 dark:bg-slate-900 flex items-center justify-center p-6 relative border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-700 shrink-0">
-        <img id="detail-img" src="${escapeHtml(imgUrl)}" alt="${escapeHtml(book.title)}" loading="eager" class="max-w-full max-h-full object-contain drop-shadow-xl rounded">
+      <div class="w-full md:w-2/5 h-72 md:h-[450px] bg-slate-100 dark:bg-slate-900 flex items-center justify-center p-6 relative border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-700">
+        <img src="${imgUrl}" alt="${book.title}" loading="eager" class="max-w-full max-h-full object-contain drop-shadow-xl rounded">
         <button id="detail-wishlist-btn" class="absolute bottom-4 left-4 w-10 h-10 bg-white dark:bg-slate-700 rounded-full shadow-lg flex items-center justify-center text-slate-400 hover:text-red-500 transition text-lg border border-slate-200 dark:border-slate-600">
           <i class="fa-solid fa-heart"></i>
         </button>
       </div>
 
-      <div class="w-full md:w-3/5 p-6 md:p-8 flex flex-col justify-between flex-1">
+      <div class="w-full md:w-3/5 p-6 md:p-8 flex flex-col justify-between">
         <div>
-          <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-2 block">${escapeHtml(book.category || 'ইসলামিক বই')}</span>
-          <h1 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4 leading-snug">${escapeHtml(book.title)}</h1>
+          <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-2 block">${book.category || 'ইসলামিক বই'}</span>
+          <h1 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4 leading-snug">${book.title}</h1>
           
           ${book.couponCode ? `
           <div class="mb-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/50 rounded-xl p-3 flex items-center justify-between shadow-sm">
             <span class="text-amber-800 dark:text-amber-400 font-bold text-xs"><i class="fa-solid fa-ticket mr-1"></i> কুপন কোড:</span>
             <div class="flex items-center gap-2">
-              <span id="detail-coupon-code" class="bg-amber-100 dark:bg-amber-900/60 text-amber-900 dark:text-amber-300 px-2.5 py-1 rounded font-mono font-bold text-xs">${escapeHtml(book.couponCode)}</span>
-              <button id="copy-coupon-btn" class="bg-amber-500 hover:bg-amber-600 text-white w-7 h-7 rounded flex items-center justify-center transition text-xs" title="Copy"><i class="fa-regular fa-copy"></i></button>
+              <span class="bg-amber-100 dark:bg-amber-900/60 text-amber-900 dark:text-amber-300 px-2.5 py-1 rounded font-mono font-bold text-xs">${book.couponCode}</span>
+              <button id="copy-coupon-btn" class="bg-amber-500 hover:bg-amber-600 text-white w-7 h-7 rounded flex items-center justify-center transition text-xs"><i class="fa-regular fa-copy"></i></button>
             </div>
-          </div>
-          ` : ''}
+          </div>` : ''}
 
-          <div id="detail-desc" class="prose-custom text-slate-600 dark:text-slate-300 text-sm mb-6 max-h-[400px] overflow-y-auto pr-2"></div>
+          <div id="detail-desc" class="prose-custom text-slate-600 dark:text-slate-300 text-sm mb-6"></div>
         </div>
 
         <div class="space-y-3 pt-4 border-t border-slate-100 dark:border-slate-700">
-          <a id="detail-buy-link" href="${escapeHtml(book.affiliateLink || '#')}" target="_blank" rel="noopener noreferrer" class="w-full bg-islamic-800 hover:bg-islamic-900 text-white font-bold py-3.5 px-4 rounded-xl text-sm shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 ${!book.affiliateLink ? 'opacity-50 pointer-events-none' : ''}">
+          <a href="${book.affiliateLink || '#'}" target="_blank" rel="noopener noreferrer" class="w-full bg-islamic-800 hover:bg-islamic-900 text-white font-bold py-3.5 px-4 rounded-xl text-sm shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
             <i class="fa-solid fa-cart-shopping text-amber-400"></i> এখনই অর্ডার করুন (Buy Now)
           </a>
-          <button id="detail-share-btn" class="w-full bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-bold py-3 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2">
+          <button id="detail-share-btn" class="w-full bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-200 font-bold py-3 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2">
             <i class="fa-solid fa-arrow-up-from-bracket"></i> শেয়ার করুন (Share)
           </button>
         </div>
@@ -598,11 +539,7 @@
   </div>
 
   <script>
-    const BOOK_ID = "${book.id}";
-    const BOOK_TITLE = ${JSON.stringify(book.title)};
-    const BOOK_DESC = ${JSON.stringify(book.description || '')};
-    const PAGE_URL = "${pageUrl}";
-
+    const rawMarkdown = ${JSON.stringify(book.description || '')};
     const showToast = (msg) => {
       const toast = document.getElementById('toast');
       document.getElementById('toast-msg').innerText = msg;
@@ -615,186 +552,133 @@
       return \`<a href="\${href}" target="_blank" rel="noopener noreferrer" class="text-emerald-600 dark:text-emerald-400 font-bold underline hover:text-emerald-700">\${text}</a>\`;
     };
     marked.setOptions({ renderer: renderer, breaks: true, gfm: true });
-
-    document.getElementById('detail-desc').innerHTML = DOMPurify.sanitize(marked.parse(BOOK_DESC));
+    document.getElementById('detail-desc').innerHTML = DOMPurify.sanitize(marked.parse(rawMarkdown));
 
     const copyBtn = document.getElementById('copy-coupon-btn');
     if(copyBtn) {
       copyBtn.onclick = () => {
-        const code = document.getElementById('detail-coupon-code').innerText;
-        navigator.clipboard.writeText(code);
+        navigator.clipboard.writeText('${book.couponCode}');
         showToast("কুপন কোড কপি হয়েছে!");
       };
     }
 
-    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-    const wBtn = document.getElementById('detail-wishlist-btn');
-    const updateWBtn = () => {
-      if (wishlist.includes(BOOK_ID)) {
-        wBtn.classList.add('text-red-500', 'bg-red-50');
-        wBtn.classList.remove('text-slate-400', 'bg-white');
-      } else {
-        wBtn.classList.remove('text-red-500', 'bg-red-50');
-        wBtn.classList.add('text-slate-400', 'bg-white');
-      }
-    };
-    updateWBtn();
-
-    wBtn.onclick = () => {
-      if (wishlist.includes(BOOK_ID)) wishlist = wishlist.filter(w => w !== BOOK_ID);
-      else { wishlist.push(BOOK_ID); showToast("উইশলিস্টে যুক্ত হয়েছে!"); }
-      localStorage.setItem('wishlist', JSON.stringify(wishlist));
-      updateWBtn();
-    };
-
     document.getElementById('detail-share-btn').onclick = () => {
+      const shareUrl = '${canonicalUrl}';
       if (navigator.share) {
-        navigator.share({ title: BOOK_TITLE, text: 'এই ইসলামিক বইটি চেক করুন!', url: PAGE_URL }).catch(e => console.log(e));
+        navigator.share({ title: '${book.title}', text: 'এই ইসলামিক বইটি চেক করুন!', url: shareUrl }).catch(e=>console.log(e));
       } else {
-        navigator.clipboard.writeText(PAGE_URL);
-        showToast("বইয়ের লিংক কপি হয়েছে!");
+        navigator.clipboard.writeText(shareUrl);
+        showToast("লিংক কপি হয়েছে!");
       }
     };
-
-    // Record recent view
-    try {
-      let recent = JSON.parse(localStorage.getItem('recent')) || [];
-      recent = recent.filter(r => r !== BOOK_ID);
-      recent.unshift(BOOK_ID);
-      localStorage.setItem('recent', JSON.stringify(recent.slice(0, 10)));
-    } catch(e) {}
   <\/script>
 </body>
 </html>`;
     }
 
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
-
-    // --- SAVE AND COMMIT INDIVIDUAL BOOK HTML TO GITHUB ---
-    async function saveBookHtmlFileToGithub(book) {
+    // --- UPLOAD BOOK HTML FILE TO GITHUB ---
+    async function uploadBookHtmlFile(bookObj, oldHtmlFile) {
       const { repo, token, branch } = getGitConfig();
-      if (!repo || !token) return;
+      if(!repo || !token) throw new Error("GitHub Configuration Missing");
 
-      const pathInRepo = `bookhtml/${book.htmlFile}`;
-      const fileContent = generateBookHtmlPageContent(book);
-      const base64Content = utf8ToBase64(fileContent);
+      const htmlFileName = bookObj.htmlFile;
+      const htmlContent = generateBookHtmlContent(bookObj);
+      const base64Content = utf8ToBase64(htmlContent);
+      const gitPath = `bookhtml/${htmlFileName}`;
 
-      let existingSha = null;
+      // Check existing SHA
+      let fileShaForHtml = null;
       try {
-        const checkRes = await fetch(`https://api.github.com/repos/${repo}/contents/${pathInRepo}?ref=${branch}`, { headers: { 'Authorization': `token ${token}` } });
+        const checkRes = await fetch(`https://api.github.com/repos/${repo}/contents/${gitPath}?ref=${branch}`, {
+          headers: { 'Authorization': `token ${token}` }
+        });
         if(checkRes.ok) {
-          const checkData = await checkRes.json();
-          existingSha = checkData.sha;
+          const fileData = await checkRes.json();
+          fileShaForHtml = fileData.sha;
         }
       } catch(e) {}
 
       const payload = {
-        message: `Generate bookhtml/${book.htmlFile} via Admin`,
+        message: `Generate static page ${gitPath}`,
         content: base64Content,
         branch: branch
       };
-      if (existingSha) payload.sha = existingSha;
+      if(fileShaForHtml) payload.sha = fileShaForHtml;
 
-      const res = await fetch(`https://api.github.com/repos/${repo}/contents/${pathInRepo}`, {
+      const res = await fetch(`https://api.github.com/repos/${repo}/contents/${gitPath}`, {
         method: 'PUT',
         headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
 
-      if (!res.ok) {
-        throw new Error(`bookhtml/${book.htmlFile} পেজ গিটহাবে সেভ হতে ব্যর্থ হয়েছে।`);
-      }
-    }
+      if(!res.ok) throw new Error("Static Book HTML Generation Failed");
 
-    // --- DELETE INDIVIDUAL BOOK HTML FROM GITHUB ---
-    async function deleteBookHtmlFileFromGithub(htmlFilename) {
-      if (!htmlFilename) return;
-      const { repo, token, branch } = getGitConfig();
-      if (!repo || !token) return;
-
-      const pathInRepo = `bookhtml/${htmlFilename}`;
-      try {
-        const checkRes = await fetch(`https://api.github.com/repos/${repo}/contents/${pathInRepo}?ref=${branch}`, { headers: { 'Authorization': `token ${token}` } });
-        if(checkRes.ok) {
-          const checkData = await checkRes.json();
-          const delPayload = {
-            message: `Delete legacy bookhtml/${htmlFilename}`,
-            sha: checkData.sha,
-            branch: branch
-          };
-          await fetch(`https://api.github.com/repos/${repo}/contents/${pathInRepo}`, {
-            method: 'DELETE',
-            headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify(delPayload)
+      // Delete old HTML file if filename was changed
+      if(oldHtmlFile && oldHtmlFile !== htmlFileName) {
+        try {
+          const oldGitPath = `bookhtml/${oldHtmlFile}`;
+          const oldCheck = await fetch(`https://api.github.com/repos/${repo}/contents/${oldGitPath}?ref=${branch}`, {
+            headers: { 'Authorization': `token ${token}` }
           });
-        }
-      } catch(e) {
-        console.warn("HTML file cleanup failed or file already missing:", e);
+          if(oldCheck.ok) {
+            const oldData = await oldCheck.json();
+            await fetch(`https://api.github.com/repos/${repo}/contents/${oldGitPath}`, {
+              method: 'DELETE',
+              headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                message: `Remove old static page ${oldGitPath}`,
+                sha: oldData.sha,
+                branch: branch
+              })
+            });
+          }
+        } catch(err) { console.error("Could not delete old file:", err); }
       }
     }
 
-    // FORM SUBMIT HANDLER
+    // --- SAVE BOOK & SYNC ALL ---
     document.getElementById('book-form').onsubmit = async (e) => {
       e.preventDefault();
       const saveBtn = document.getElementById('save-btn');
+      const originalBtnHtml = saveBtn.innerHTML;
+
+      let htmlFileName = document.getElementById('book-html-file').value.trim();
+      if(!htmlFileName.endsWith('.html')) htmlFileName += '.html';
+      
+      if(htmlFileName.includes('/') || htmlFileName.includes('\\')) {
+        notify("HTML ফাইলের নামে / বা \\ থাকা যাবে না!", "error"); return;
+      }
+
+      const editId = document.getElementById('edit-book-id').value;
+      const oldHtmlFile = document.getElementById('old-html-file').value;
+
+      // Check uniqueness of htmlFile
+      const duplicate = localBooksData.find(b => b.htmlFile === htmlFileName && b.id !== editId);
+      if(duplicate) {
+        notify("এই HTML ফাইল নেমটি অন্য একটি বইয়ে ব্যবহার করা হয়েছে!", "error"); return;
+      }
+
       saveBtn.disabled = true;
-      saveBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> সেভ করা হচ্ছে...`;
+      saveBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> প্রসেস ও HTML সেভ হচ্ছে...`;
 
       try {
-        const editId = document.getElementById('edit-book-id').value;
-        const originalHtml = document.getElementById('original-html-file').value.trim();
-
-        let rawHtmlInput = document.getElementById('book-html-filename').value.trim();
-        if (!rawHtmlInput) {
-          rawHtmlInput = generateDefaultHtmlFilename(document.getElementById('book-title').value.trim());
-        }
-
-        let cleanHtmlFilename = sanitizeFilename(rawHtmlInput);
-        if (!cleanHtmlFilename.endsWith('.html')) {
-          cleanHtmlFilename += '.html';
-        }
-
-        // Validate HTML Filename
-        if (cleanHtmlFilename.includes('/') || cleanHtmlFilename.includes('\\') || cleanHtmlFilename.includes('?')) {
-          throw new Error("HTML ফাইলের নাম সঠিক নয়!");
-        }
-
-        // Check for duplication with other books
-        const existingWithSameHtml = localBooksData.find(b => b.htmlFile === cleanHtmlFilename && b.id !== editId);
-        if (existingWithSameHtml) {
-          throw new Error(`'${cleanHtmlFilename}' নামটি অন্য বইয়ের জন্য ব্যবহৃত হচ্ছে। আলাদা নাম দিন।`);
-        }
-
         const bookObj = {
           id: editId || 'book_' + Date.now(),
           title: document.getElementById('book-title').value.trim(),
+          htmlFile: htmlFileName,
           category: document.getElementById('book-category').value.trim(),
           affiliateLink: document.getElementById('affiliate-link').value.trim(),
           couponCode: document.getElementById('coupon-code').value.trim(),
           imageUrl: document.getElementById('image-url-input').value.trim(),
           description: document.getElementById('book-desc').value.trim(),
           featured: document.getElementById('book-featured').checked,
-          htmlFile: cleanHtmlFilename,
           createdAt: editId ? (localBooksData.find(b=>b.id===editId)?.createdAt || Date.now()) : Date.now()
         };
 
-        // 1. Generate & Push bookhtml/FILENAME.html
-        await saveBookHtmlFileToGithub(bookObj);
+        // STEP 1: Upload Static HTML Page to GitHub
+        await uploadBookHtmlFile(bookObj, oldHtmlFile);
 
-        // 2. If renamed during edit, delete old bookhtml/OLD.html
-        if (editId && originalHtml && originalHtml !== cleanHtmlFilename) {
-          await deleteBookHtmlFileFromGithub(originalHtml);
-        }
-
-        // 3. Update local array & data.json on GitHub
+        // STEP 2: Update local JSON array
         if (editId) {
           const idx = localBooksData.findIndex(b => b.id === editId);
           if (idx !== -1) localBooksData[idx] = { ...localBooksData[idx], ...bookObj };
@@ -802,14 +686,16 @@
           localBooksData.unshift(bookObj);
         }
 
+        // STEP 3: Sync data.json
         await syncDataToGithub();
+
         document.getElementById('reset-form-btn').click();
-        notify("✅ বই এবং HTML পেজ সফলভাবে সেভ হয়েছে!");
+        notify("🎉 সফলভাবে বই, ছবি ও Book HTML সেভ হয়েছে!");
       } catch (err) {
         notify("❌ Error: " + err.message, "error");
       } finally {
         saveBtn.disabled = false;
-        saveBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> সেভ করুন ও গিটহাবে সিঙ্ক করুন`;
+        saveBtn.innerHTML = originalBtnHtml;
       }
     };
 
@@ -827,27 +713,44 @@
         body: JSON.stringify(payload)
       });
 
-      if (!res.ok) throw new Error("গিটহাব API 업데이트 (data.json) ব্যর্থ হয়েছে।");
+      if (!res.ok) throw new Error("গিটহাব API আপডেট ব্যর্থ হয়েছে।");
       const resData = await res.json();
       fileSha = resData.content.sha;
       renderAdminList(localBooksData);
     }
 
     window.deleteBook = async (id) => {
-      const bookToDelete = localBooksData.find(b => b.id === id);
-      if (!bookToDelete) return;
+      const book = localBooksData.find(b => b.id === id);
+      if (!book) return;
 
-      if (confirm(`আপনি কি নিশ্চিত '${bookToDelete.title}' বইটি এবং এর HTML ফাইলটি মুছে ফেলতে চান?`)) {
+      if (confirm(`আপনি কি নিশ্চিত "${book.title}" বইটি ও এর HTML পেজটি মুছে ফেলতে চান?`)) {
+        const { repo, token, branch } = getGitConfig();
+        const htmlFileName = book.htmlFile || (book.id + '.html');
+        
+        localBooksData = localBooksData.filter(b => b.id !== id);
+        renderAdminList(localBooksData);
+
         try {
-          if (bookToDelete.htmlFile) {
-            await deleteBookHtmlFileFromGithub(bookToDelete.htmlFile);
+          // Delete HTML file from GitHub
+          if(repo && token) {
+            const gitPath = `bookhtml/${htmlFileName}`;
+            const checkRes = await fetch(`https://api.github.com/repos/${repo}/contents/${gitPath}?ref=${branch}`, {
+              headers: { 'Authorization': `token ${token}` }
+            });
+            if(checkRes.ok) {
+              const fileData = await checkRes.json();
+              await fetch(`https://api.github.com/repos/${repo}/contents/${gitPath}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: `Delete static page ${gitPath}`, sha: fileData.sha, branch: branch })
+              });
+            }
           }
-          localBooksData = localBooksData.filter(b => b.id !== id);
-          renderAdminList(localBooksData);
           await syncDataToGithub();
-          notify("🗑️ বইটি এবং HTML ফাইল সফলভাবে মুছে ফেলা হয়েছে।");
+          notify("🗑️ বইটি ও তার HTML ফাইল সফলভাবে মুছে ফেলা হয়েছে।");
         } catch (e) {
-          notify("ডিলিট ব্যর্থ: " + e.message, 'error');
+          notify("❌ ডিলিট ব্যর্থ: " + e.message, 'error');
+          loadDataFromGitOrLocal();
         }
       }
     };
@@ -860,3 +763,4 @@
   </script>
 </body>
 </html>
+
